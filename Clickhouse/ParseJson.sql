@@ -29,3 +29,22 @@ CREATE TABLE stage_nats.shipping_boxes_raw
           TTL toStartOfDay(_row_created) + INTERVAL 1 MONTH DELETE
     SETTINGS merge_with_ttl_timeout = 2400
     ;
+
+
+-- получение названий полей внутри жсона с их типами:
+SET allow_experimental_object_type = 1;
+CREATE TABLE test.test_raw
+(
+    `raw` JSON
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 8192;
+truncate table test.test_raw;
+insert into test.test_raw (raw)
+select
+    arrayJoin(JSONExtractArrayRaw(message)) as row
+    --,arrayJoin(JSONExtractArrayRaw(row, 'shks')) AS shks
+from stage_external.kafka_table_raw
+     where _row_created>'2023-06-01'
+limit 100000;
