@@ -48,3 +48,6 @@ select
 from stage_external.kafka_table_raw
      where _row_created>'2023-06-01'
 limit 100000;
+
+SET describe_extend_object_types=1;
+DESCRIBE test.test_raw;
