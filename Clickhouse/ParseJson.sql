@@ -51,3 +51,18 @@ limit 100000;
 
 SET describe_extend_object_types=1;
 DESCRIBE test.test_raw;
+
+
+--Выцепить один элемент с заголовком из жсона:
+select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
+      toJSONString(map(((arrayFilter(x -> x.1 = 'a', JSONExtractKeysAndValuesRaw(s)) as a).1)[1], arrayMap(x->toFloat64(x), JSONExtractArrayRaw((a.2)[1])))) as r;
+--результат:  {"a":[-100,200]}     
+
+--Другим способом собрать некоторые поля жсона в отдельный жсон:
+     select '"colorIDs":'||ifNull(nullIf(JSONExtractRaw(message,'colorIDs'),''),'null') as colorIDs
+,'"colorParentIDs":'||ifNull(nullIf(JSONExtractRaw(message,'colorParentIDs'),''),'null') as colorParentIDs
+,'"fullNmsImt":'||ifNull(nullIf(JSONExtractRaw(message,'fullNmsImt'),''),'null') as fullNmsImt
+,'"nameFormula":'||ifNull(nullIf(JSONExtractRaw(message,'nameFormula'),''),'null') as nameFormula
+,'"dimensions":'||ifNull(nullIf(JSONExtractRaw(message,'dimensions'),''),'null') as dimensions
+,'{'||colorIDs||','||colorParentIDs||','||fullNmsImt||','||nameFormula||','||dimensions||'}' as ext_cards
+from _raw;
