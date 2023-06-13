@@ -56,7 +56,14 @@ DESCRIBE test.test_raw;
 --Выцепить один элемент с заголовком из жсона:
 select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
       toJSONString(map(((arrayFilter(x -> x.1 = 'a', JSONExtractKeysAndValuesRaw(s)) as a).1)[1], arrayMap(x->toFloat64(x), JSONExtractArrayRaw((a.2)[1])))) as r;
---результат:  {"a":[-100,200]}     
+--результат:  {"a":[-100,200]}  
+
+select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
+       JSONExtract(s, 'Tuple(a Array(Float32))') as dd,
+       toJSONString( JSONExtract(s, 'Tuple(a Array(Float32))') ) as c
+       , toJSONString(dd) as ad
+        ;
+
 
 --Другим способом собрать некоторые поля жсона в отдельный жсон:
      select '"colorIDs":'||ifNull(nullIf(JSONExtractRaw(message,'colorIDs'),''),'null') as colorIDs
