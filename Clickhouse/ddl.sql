@@ -27,3 +27,20 @@ SYSTEM RELOAD DICTIONARY <dict_name>
 system.dictionaries
 
 -- найти справочники, которые ссылаются на определённую таблицу с другого сервера.
+
+
+CREATE TABLE stage_nats.shipping_boxes_raw
+(
+    message    String,
+    _topic     LowCardinality(String),
+    _key       String,
+    _offset    UInt64,
+    _timestamp Nullable(DateTime),
+    _partition UInt8,
+    _row_created DateTime
+) ENGINE = MergeTree
+    PARTITION BY toYYYYMMDD(_row_created)
+        ORDER BY _key
+          TTL toStartOfDay(_row_created) + INTERVAL 1 MONTH DELETE
+    SETTINGS merge_with_ttl_timeout = 2400
+    ;
