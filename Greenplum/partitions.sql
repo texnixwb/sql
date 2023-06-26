@@ -17,3 +17,10 @@ ALTER TABLE test_.v_late_rids_duration_in_poo
 ALTER TABLE olap.v_late_rids_duration_in_poo
   EXCHANGE PARTITION FOR (DATE '20230501')
   WITH TABLE test_.v_late_rids_duration_in_poo_one_part;
+
+--пачка смены схем
+SELECT 'ALTER TABLE test_.'||table_name||' SET SCHEMA stage_external;'
+FROM information_schema.tables
+WHERE table_schema = 'test_' AND table_name like 'products_cards_nm%'
+--and table_name not like '%_prt_%'
+and table_type='BASE TABLE';
