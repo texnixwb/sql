@@ -12,7 +12,9 @@ KILL QUERY WHERE user='superset' SYNC;
 select query from system.query_log     where query like'%postgresql%'      limit 100;
              
 -- таблица справочников
-select * from system.dictionaries;
+select database,name,status,type,round(bytes_allocated/1024/1024) as Mb,query_count,element_count,source,comment
+from system.dictionaries
+order by bytes_allocated desc;
 
 --ддл таблиц содержащих слово:
 select * from system.tables         where create_table_query like '%oof-positions-final%'         limit 100;
