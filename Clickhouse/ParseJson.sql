@@ -13,7 +13,7 @@ FORMAT PrettyCompactMonoBlock;
        nullIf(cast(round(toDecimal64OrNull(JSONExtract(message, 'latitude', 'Nullable(String)'),14),9) as Nullable(Decimal(12,9))),0) AS latitude,
        nullIf(cast(round(toDecimal64OrNull(JSONExtract(message, 'longitude', 'Nullable(String)'),14),9) as Nullable(Decimal(12,9))),0) AS longitude,
 --до 22.11 клика вот так надо парсить длинные текстовые суммы  '{"summ":"30.590000000000003"}':
-       toDecimal64(coalesce(JSONExtract(message, 'summ', 'Nullable(String)'),'0'),2) as amount
+       toDecimal64(coalesce(nullIf(JSONExtract(message, 'summ', 'Nullable(String)'),''),'0'),2) as amount
        
 
 --эталон рав таблицы:
