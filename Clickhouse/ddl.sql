@@ -44,3 +44,7 @@ CREATE TABLE stage_nats.shipping_boxes_raw
           TTL toStartOfDay(_row_created) + INTERVAL 1 MONTH DELETE
     SETTINGS merge_with_ttl_timeout = 2400
     ;
+
+-- индексы
+alter table positions.position_changes add INDEX shk_idx(shk_id) TYPE bloom_filter GRANULARITY 3;
+alter table positions.position_changes MATERIALIZE INDEX shk_idx;
