@@ -1,5 +1,5 @@
     --вместо
-EXCHANGE TABLES buffer.open_registries AND datamart.open_registries; --(не поддерживается больше)
+EXCHANGE TABLES buffer.open_registries AND datamart.open_registries; --(не поддерживается на некторые OS)
 --написать:
 RENAME TABLE buffer.open_registries TO buffer.open_registries_tmp
     , datamart.open_registries TO datamart.open_registries_old
