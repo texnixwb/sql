@@ -16,4 +16,4 @@ and srcobj.relname = 'shk_state'
 
 
 --поменять тип колумна
-ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
+alter table stage_external.logistics_shipping_tsd alter column seal2 type int USING seal2::integer;
