@@ -13,3 +13,7 @@ FROM pg_class srcobj
   LEFT JOIN pg_namespace tgtnsp ON tgtobj.relnamespace = tgtnsp.oid
 WHERE tgtdep.deptype = 'i'::"char" AND tgtobj.relkind = 'v'::"char"
 and srcobj.relname = 'shk_state'
+
+
+--поменять тип колумна
+ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
