@@ -20,6 +20,25 @@ SOURCE(ODBC(DB 'dwh' TABLE 'shk_tracker.action_list' CONNECTION_STRING 'DSN=Gree
 LIFETIME(MIN 86400 MAX 86400)
 LAYOUT(HASHED(PREALLOCATE 0));
 
+--на кластере, кешированный, который занимает 500мб в памяти кеша
+drop DICTIONARY dictionaries.wh_storage_places on cluster distributed_cluster_1;
+CREATE DICTIONARY dictionaries.wh_storage_places on cluster distributed_cluster_1
+(
+    `place_id` Int32,
+    `office_id` Int32,
+    `place_name` String,
+    `place_type_id` Int16,
+    `wh_id` Int16,
+     stage Int32,
+     storage_id Int16,
+    `is_deleted` bool
+)
+PRIMARY KEY place_id
+SOURCE(ODBC(DB 'dwh' TABLE 'dict.wh_storage_places' CONNECTION_STRING 'DSN=Greenplum'))
+LIFETIME(MIN 86000 MAX 86400)
+LAYOUT(CACHE(SIZE_IN_CELLS 10000000))
+COMMENT 'СЛоварь мест хранения и их параметров, большой, потому хранит в кеше то что находит в гринпламе';
+
 -- перезагрузить все справочники
 SYSTEM RELOAD DICTIONARY <dict_name>
 
