@@ -5,7 +5,10 @@
  --where state='active'
  order by xact_start;
 
-
+--Отменить процесс:
+select pg_cancel_backend();
+-уничтожить процесс, с потерей данных о транзакции:
+select pg_terminate_backend ();
 --блокировки
 select
   bgl.relation::regclass,  bda.pid as blocked_pid,  bda.query as blocked_query,  bdl.mode as blocked_mode,  bga.pid AS blocking_pid,  bga.query as blocking_query,  bgl.mode as blocking_mode
