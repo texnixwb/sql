@@ -8,3 +8,7 @@ round(sqrt(pow(
                                          cos((lm.latitude / COALESCE(pvz.latitude, lm.latitude))::double precision),
                                          2::double precision)) *
                         1.6::double precision)
+
+--преобразовать нестандартные типы дат в дату
+--если dt='20.02.2023'
+to_date(dt, 'DD.MM.YYYY')
