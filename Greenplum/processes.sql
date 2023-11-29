@@ -22,3 +22,5 @@ where not bdl.granted;
 SELECT * FROM gp_toolkit.gp_stats_missing
 where smitable like '%test%'
 and smitable not like 'test_no_need%'
+
+--информация о метадате: https://www.programmersought.com/article/51627572462/
