@@ -16,3 +16,9 @@ from cte
 
 create schema test_;
 alter schema test_ owner to test_rw;
+
+--удаление юзера
+drop schema test_abishev cascade;
+revoke ro  from abishev;
+revoke all on ALL TABLES IN SCHEMA shk_tracker from abishev;
+drop user abishev;
