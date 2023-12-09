@@ -22,6 +22,11 @@ from (
 ) q
 GROUP BY parent;
 
+-- тип дистрибьюции таблицы
+select localoid from gp_distribution_policy where policytype='r'
+
+  
+
 --- неиспользуемые таблицы
 SELECT
         schemaname,
