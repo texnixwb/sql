@@ -1,6 +1,17 @@
 -- создать колумн
 alter table test.buf_unloaded_rids add column last_action_id Nullable(Int32);
 
+--алгоритм применения кодеков:
+--на жсоны CODEC(ZSTD(1))
+--на возрастающие даты и 32,64 цифры /для редко поднимаемых данных/ CODEC(DoubleDelta, ZSTD(1)) /для частых / CODEC(Delta, ZSTD(1))
+--на рандом цифры 32 и 64 CODEC(T64, ZSTD(1))
+-- для флоат32 64 CODEC(FPC, ZSTD(1))
+
+применить к новым данным:
+ALTER TABLE test_table MODIFY COLUMN column_a CODEC(ZSTD(2)); 
+--но работает только с новыми данными в таблицу, чтобы применить кодек к старым данным:
+ALTER TABLE test_table UPDATE column_a = column_a WHERE 1
+
 --поменять ттл
 ALTER TABLE sales_data.position_changes_ordo_raw MODIFY TTL _row_created + toIntervalMonth(3);
 
