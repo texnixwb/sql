@@ -56,24 +56,31 @@ SYSTEM RELOAD DICTIONARY <dict_name>
 -- по словарям табличка 
 system.dictionaries
 
--- найти справочники, которые ссылаются на определённую таблицу с другого сервера.
-
-
-CREATE TABLE stage_nats.shipping_boxes_raw
+-- стандарт чтения из стрима:
+    
+CREATE TABLE streams.transactions
 (
+    `message` String
+)
+ENGINE = Kafka(dataops_kafka_gold)
+SETTINGS kafka_topic_list = 'topic_list_name',
+  kafka_group_name = 'nameserver_nametopic_group',
+  kafka_format = 'JSONAsString',
+  kafka_max_block_size = 100000,  
+  kafka_num_consumers = 3;
+
+CREATE TABLE stage_bo.transactions_raw (
     message    String,
     _topic     LowCardinality(String),
     _key       String,
     _offset    UInt64,
-    _timestamp Nullable(DateTime),
+   _timestamp Nullable(DateTime),
     _partition UInt8,
-    _row_created DateTime
-) ENGINE = MergeTree
-    PARTITION BY toYYYYMMDD(_row_created)
-        ORDER BY _key
-          TTL toStartOfDay(_row_created) + INTERVAL 1 MONTH DELETE
-    SETTINGS merge_with_ttl_timeout = 2400
-    ;
+   _row_created DateTime
+) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_row_created)  ORDER BY _key
+    TTL toStartOfDay(_row_created) + INTERVAL 3 MONTH DELETE
+    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400, index_granularity_bytes=0
+    COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
 -- индексы
 alter table positions.position_changes add INDEX shk_idx(shk_id) TYPE bloom_filter GRANULARITY 3;
