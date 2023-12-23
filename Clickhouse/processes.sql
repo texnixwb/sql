@@ -7,6 +7,11 @@ KILL QUERY WHERE query_id='c5b75dbd-fb0d-4802-9d25-06bdfc92201d';
 --убить процессы одного юзера, с ожиданием завершения убийства
 KILL QUERY WHERE user='superset' SYNC;
 
+
+--мутации проверить и убить лишние, они не откатываются, фиксируется то что закончилось
+select 'KILL MUTATION WHERE mutation_id ='''||mutation_id||''';' , * from system.mutations ;
+
+
 --какие процессы:
 SHOW PROCESSLIST;
 
