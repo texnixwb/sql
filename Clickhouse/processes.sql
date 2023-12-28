@@ -29,9 +29,16 @@ order by bytes_allocated desc;
 --ддл таблиц содержащих слово:
 select * from system.tables         where create_table_query like '%oof-positions-final%'         limit 100;
 
+--деаттаченые партиции:
+select * from system.detached_parts;
+
 --свободное место и всего места на дисках:
 select free_space/1024/1024/1024 as  free_space_gb,total_space/1024/1024/1024 as  total_space_gb,unreserved_space/1024/1024/1024 as  unreserved_space_gb
 from system.disks;
+
+--сравнение сколько занято на диске, и сколько весят таблицы:
+select round((total_space/1024/1024/1024)-(free_space/1024/1024/1024)) as fill_disk from system.disks
+union all    select round(sum(bytes_size/1024/1024/1024)) as fill_disk from meta.tables_info;
 
 --сравнение двух запросов по производительности
 WITH
