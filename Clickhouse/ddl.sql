@@ -82,6 +82,17 @@ CREATE TABLE stage_bo.transactions_raw (
     SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400, index_granularity_bytes=0
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
+--оптимальное хранение коротких по времени архивов:
+  date_bak Date comment 'Дата бекапа' 
+      ----------
+        PARTITION BY date_bak
+        ORDER BY srid
+        TTL date_bak + toIntervalMonth(1) DELETE
+            , date_bak + toIntervalDay(1) RECOMPRESS CODEC(ZSTD(1))
+        SETTINGS ttl_only_drop_parts = 1, merge_with_ttl_timeout = 40960, index_granularity = 16384;
+
+
+
 -- индексы
 alter table positions.position_changes add INDEX shk_idx(shk_id) TYPE bloom_filter GRANULARITY 3;
 alter table positions.position_changes MATERIALIZE INDEX shk_idx;
