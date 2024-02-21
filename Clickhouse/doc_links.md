@@ -3,3 +3,6 @@ https://gitea.com/tempertan/ClickHouse/src/branch/master/docs/ru/operations/sett
 
 Тесты кодеков, но при проверке даблдельта на последовательное время типа now() не сжимает:
 https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema
+
+Ограничить права пользователям через профиль:
+https://clickhouse.com/docs/en/sql-reference/statements/create/settings-profile#create-settings-profile-statement
