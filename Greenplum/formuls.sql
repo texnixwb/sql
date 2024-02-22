@@ -12,3 +12,6 @@ round(sqrt(pow(
 --преобразовать нестандартные типы дат в дату
 --если dt='20.02.2023'
 to_date(dt, 'DD.MM.YYYY')
+
+--разделить строку на строки через разделитель
+unnest(string_to_array(status_in_source, ','))
