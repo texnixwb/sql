@@ -1,0 +1,2 @@
+--
+ROW_NUMBER() OVER (PARTITION BY srid ORDER BY shk_id > 0 DESC NULLS LAST, dt DESC) AS rn
