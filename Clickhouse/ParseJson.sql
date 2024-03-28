@@ -17,21 +17,22 @@ FORMAT PrettyCompactMonoBlock;
        
 
 --эталон рав таблицы:
-CREATE TABLE stage_nats.shipping_boxes_raw
+CREATE TABLE raw.wh_assembled_raw
 (
-    message    String,
-    _topic     LowCardinality(String),
-    _key       String,
-    _offset    UInt64,
-    _timestamp Nullable(DateTime),
-    _partition UInt8,
-    _row_created DateTime
-) ENGINE = MergeTree
-    PARTITION BY toYYYYMMDD(_row_created)
-        ORDER BY _key
-          TTL toStartOfDay(_row_created) + INTERVAL 1 MONTH DELETE
-    SETTINGS merge_with_ttl_timeout = 2400
-    ;
+    `message` String CODEC(ZSTD(1)),
+    `_topic` LowCardinality(String),
+    `_key` String,
+    `_offset` UInt64 CODEC(T64, ZSTD(1)),
+    `_timestamp` Nullable(DateTime),
+    `_partition` UInt8,
+    `_row_created` DateTime
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMMDD(_row_created)
+ORDER BY _key
+TTL toStartOfDay(_row_created) + toIntervalMonth(3)
+SETTINGS index_granularity = 16386, merge_with_ttl_timeout = 86400, ttl_only_drop_parts = 1, index_granularity_bytes = 4194304
+COMMENT 'Сборка на складе из wh-assembled'
 
 
 -- получение названий полей внутри жсона с их типами:
