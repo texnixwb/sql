@@ -57,11 +57,8 @@ SYSTEM RELOAD DICTIONARY <dict_name>
 system.dictionaries
 
 -- стандарт чтения из стрима:
-    
 CREATE TABLE streams.transactions
-(
-    `message` String
-)
+(    `message` String)
 ENGINE = Kafka(dataops_kafka_gold)
 SETTINGS kafka_topic_list = 'topic_list_name',
   kafka_group_name = 'nameserver_nametopic_group',
@@ -81,6 +78,24 @@ CREATE TABLE stage_bo.transactions_raw (
     TTL toStartOfDay(_row_created) + INTERVAL 3 MONTH DELETE
     SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400, index_granularity_bytes=0
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
+
+--стандарт хранения в архиве
+CREATE TABLE stage_wh.wh_sorted_raw
+(
+    `message` String CODEC(ZSTD(1)),
+    `_topic` LowCardinality(String) CODEC(ZSTD(1)),
+    `_key` String CODEC(ZSTD(1)),
+    `_offset` UInt64 CODEC(T64, ZSTD(1)),
+    `_timestamp` DateTime CODEC(ZSTD(1)),
+    `_partition` UInt8 CODEC(ZSTD(1))
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(_timestamp)
+ORDER BY _key
+TTL toStartOfMonth(_timestamp) + INTERVAL 24 MONTH
+SETTINGS index_granularity=16386,merge_with_ttl_timeout = 2000000,ttl_only_drop_parts = 1, index_granularity_bytes=4194304
+COMMENT '';
+
 
 --оптимальное хранение коротких по времени архивов:
   date_bak Date comment 'Дата бекапа' 
