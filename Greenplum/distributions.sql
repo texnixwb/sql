@@ -1,4 +1,4 @@
---получаем айди сегмента: 
+--количество на сегментах: 
 select gp_segment_id,count()
 from test.table_name
 group by gp_segment_id
