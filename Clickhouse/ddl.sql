@@ -104,7 +104,8 @@ COMMENT '';
         ORDER BY srid
         TTL date_bak + toIntervalMonth(1) DELETE
             , date_bak + toIntervalDay(1) RECOMPRESS CODEC(ZSTD(1))
-        SETTINGS ttl_only_drop_parts = 1, merge_with_ttl_timeout = 40960, index_granularity = 16384;
+        SETTINGS ttl_only_drop_parts = 1, merge_with_ttl_timeout = 86400, index_granularity = 32768,merge_with_recompression_ttl_timeout = 86400
+      ;
 
 
 
