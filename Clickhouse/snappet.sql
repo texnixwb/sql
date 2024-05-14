@@ -10,3 +10,6 @@ toInt64(halfMD5(srid)) as rid
                                                 wh_tare_entry = 'PPVZ',6,
                                                 wh_tare_entry = 'WH_TRBX', 7,
                                                 wh_tare_entry = 'WBBOX', 8, 99) as wh_tare_entry_id,
+
+--округление до часа, чтобы все записи этого часа учитывались
+toStartOfHour(date_on_shelf+interval '1' HOUR) 
