@@ -13,3 +13,6 @@ toInt64(halfMD5(srid)) as rid
 
 --округление до часа, чтобы все записи этого часа учитывались
 toStartOfHour(date_on_shelf+interval '1' HOUR) 
+
+--проверка на перенос строки
+if(position('\n' IN tare_sticker) > 0, 1, 0)
