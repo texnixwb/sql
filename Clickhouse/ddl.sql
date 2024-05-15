@@ -1,6 +1,9 @@
 -- создать колумн
 alter table test.buf_unloaded_rids add column last_action_id Nullable(Int32);
 
+--сменить местоположение колумна
+alter table positions.oof_position_changes ALTER column sm_id TYPE Nullable(Int8) AFTER shk_id;
+
 --алгоритм применения кодеков:
 --на жсоны CODEC(ZSTD(1))
 --на возрастающие даты и 32,64 цифры /для редко поднимаемых данных/ CODEC(DoubleDelta, ZSTD(1)) /для частых / CODEC(Delta, ZSTD(1))
