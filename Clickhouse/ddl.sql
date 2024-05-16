@@ -16,7 +16,7 @@ ALTER TABLE test_table MODIFY COLUMN column_a CODEC(ZSTD(2));
 ALTER TABLE test_table UPDATE column_a = column_a WHERE 1
 
 --поменять ттл
-ALTER TABLE sales_data.position_changes_ordo_raw MODIFY TTL _row_created + toIntervalMonth(3);
+ALTER TABLE datamart.positions_on_shelf MODIFY TTL toStartOfDay(date_on_shelf) + toIntervalMonth(1);
 
 --правильные сетинсы для ТТЛ
 ALTER TABLE stage_wh.wh_sorted_raw MODIFY SETTING ttl_only_drop_parts = 1;
