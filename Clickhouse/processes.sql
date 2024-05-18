@@ -10,7 +10,9 @@ SELECT user
      , round(read_rows / (total_rows_approx / 100), 2) as percent
      , toString(round(elapsed))||'s' as elapsed_s
      , toString(round((elapsed / percent * 100) - elapsed))||'s' as  left_time
+     , toString(round(read_rows / 1000/elapsed))||'k/s' as speed
      , toString(round(read_bytes / 1024 /1024))||'Mb' as read_Mgb
+     , toString(round(read_bytes / 1024/ 1024/ elapsed))||'Mb/s' as speed_disk
      , toString(round(peak_memory_usage / 1024 /1024))||'Mb mem' as MemoryMb
      ,query,query_id
 FROM system.processes;
