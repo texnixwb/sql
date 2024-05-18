@@ -5,11 +5,11 @@ FROM system.processes;
 
 --подписанные:
 SELECT user
-     ,toString(round(read_rows / 1000 /1000))||'kk' as read_rows_kk
-     ,toString(round(total_rows_approx / 1000 /1000))||'kk' as total_rows_kk
      , round(read_rows / (total_rows_approx / 100), 2) as percent
-     , toString(round(elapsed))||'s' as elapsed_s
-     , toString(round((elapsed / percent * 100) - elapsed))||'s' as  left_time
+     ,toString(round(read_rows / 1000 /1000))||'kk' || ' из '
+     || toString(round(total_rows_approx / 1000 /1000))||'kk' as total_rows_kk
+     , toString(round(elapsed))||'s' || ' left '
+     || toString(round((elapsed / percent * 100) - elapsed))||'s' as  left_time
      , toString(round(read_rows / 1000/elapsed))||'k/s' as speed
      , toString(round(read_bytes / 1024 /1024))||'Mb' as read_Mgb
      , toString(round(read_bytes / 1024/ 1024/ elapsed))||'Mb/s' as speed_disk
