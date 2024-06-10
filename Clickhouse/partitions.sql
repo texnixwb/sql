@@ -21,6 +21,7 @@ from system.tables where database=(select distinct database from parts)
                          and table=(select distinct table from parts)         ))
 select sql_cript,sort_id,partition
     from (
+    --*вырезаем если не обязательно чистить колумны*
     select toInt64(pp.partition||toString(round(toInt64(data_compressed_bytes)/10000))) as sort_id
          , 'ALTER TABLE '||cc.database||'.'||cc.table||' CLEAR COLUMN '||cc.name||' IN PARTITION '||pp.partition||';' as sql_cript
     ,pp.partition
@@ -30,6 +31,7 @@ join parts pp using (database,table)
     order by data_compressed_bytes desc
 --теперь дропаем партиции по одной (ибо вся таблица с данными партиций и ордербаем обычно больше 50гб)
 union all
+    --*конец вырезки если не обязательно чистить колумны*
 select -10-row_number() over (partition by 1) as sort_id,'ALTER TABLE '||cc.database||'.'||cc.table||' DROP PARTITION '||cc.partition||';' as sql_cript
     ,cc.partition
     from parts cc
