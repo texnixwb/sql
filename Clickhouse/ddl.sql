@@ -83,7 +83,7 @@ CREATE TABLE stage_bo.transactions_raw (
    _row_created DateTime
 ) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_row_created)  ORDER BY _key
     TTL toStartOfDay(_row_created) + INTERVAL 3 MONTH DELETE
-    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400, index_granularity_bytes=0
+    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes=4194304
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
 --стандарт хранения в архиве
