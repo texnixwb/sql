@@ -6,3 +6,6 @@ https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema
 
 Ограничить права пользователям через профиль:
 https://clickhouse.com/docs/en/sql-reference/statements/create/settings-profile#create-settings-profile-statement
+
+Описание работы словарей
+https://habr.com/ru/companies/rebrainme/articles/513972/
