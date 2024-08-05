@@ -74,16 +74,16 @@ SETTINGS kafka_topic_list = 'topic_list_name',
   kafka_num_consumers = 3;
 
 CREATE TABLE stage_bo.transactions_raw (
-    message    String,
+    message    String CODEC(ZSTD(1)),
     _topic     LowCardinality(String),
     _key       String,
-    _offset    UInt64,
+    _offset    UInt64 CODEC(T64, ZSTD(1)),
    _timestamp Nullable(DateTime),
     _partition UInt8,
    _row_created DateTime
 ) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_row_created)  ORDER BY _key
     TTL toStartOfDay(_row_created) + INTERVAL 3 MONTH DELETE
-    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes=4194304
+    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes=536870912
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
 --стандарт хранения в архиве
@@ -100,7 +100,7 @@ ENGINE = MergeTree
 PARTITION BY toYYYYMM(_timestamp)
 ORDER BY _key
 TTL toStartOfMonth(_timestamp) + INTERVAL 24 MONTH
-SETTINGS index_granularity=16386,merge_with_ttl_timeout = 2000000,ttl_only_drop_parts = 1, index_granularity_bytes=4194304
+SETTINGS index_granularity=16386,merge_with_ttl_timeout = 2000000,ttl_only_drop_parts = 1, index_granularity_bytes=536870912
 COMMENT '';
 
 
@@ -111,7 +111,7 @@ COMMENT '';
         ORDER BY srid
         TTL date_bak + toIntervalMonth(1) DELETE
             , date_bak + toIntervalDay(1) RECOMPRESS CODEC(ZSTD(1))
-        SETTINGS ttl_only_drop_parts = 1, merge_with_ttl_timeout = 86400, index_granularity = 32768,merge_with_recompression_ttl_timeout = 86400
+        SETTINGS ttl_only_drop_parts = 1, merge_with_ttl_timeout = 86400, index_granularity = 536870912,merge_with_recompression_ttl_timeout = 86400
       ;
 
 
