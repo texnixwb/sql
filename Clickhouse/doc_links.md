@@ -9,3 +9,6 @@ https://clickhouse.com/docs/en/sql-reference/statements/create/settings-profile#
 
 Описание работы словарей
 https://habr.com/ru/companies/rebrainme/articles/513972/
+
+Короткие статьи по кликхаузу в бигдатаскул
+https://bigdataschool.ru/blog/news/clickhouse/page/3
