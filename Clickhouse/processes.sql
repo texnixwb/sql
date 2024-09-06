@@ -95,3 +95,14 @@ having
 order by
     OSCPUVirtual desc
 limit 100;
+
+--просмотр какие квери используют таблицы/колумны
+select  event_time,query_duration_ms,memory_usage,query,user
+,normalized_query_hash
+from system.query_log
+         where has(databases,'datamart')
+         and has(tables,'datamart.shk_rid_price_nm')
+         and has(columns,'datamart.shk_rid_price_nm.dwh_date')
+         and type='QueryFinish'
+         limit 100;
+
