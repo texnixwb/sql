@@ -12,3 +12,6 @@ https://habr.com/ru/companies/rebrainme/articles/513972/
 
 Короткие статьи по кликхаузу в бигдатаскул
 https://bigdataschool.ru/blog/news/clickhouse/page/3
+
+Иван Шамаев
+https://ivan-shamaev.ru/clickhouse-101-course-on-learn-clickhouse-com/
