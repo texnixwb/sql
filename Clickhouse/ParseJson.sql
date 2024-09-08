@@ -5,6 +5,10 @@ FROM shk_storage.shk_on_place_raw d
 SETTINGS max_block_size = 1000000
 FORMAT PrettyCompactMonoBlock;
 
+
+--если arrayJoin жрёт слишком много памяти (а можно и во всех случаях так делать) стоит сделать бесконечный лимит, и всё работает моментально:
+limit 10000000
+
 -- Правильный парсинг координат из жсон
 Обьявление: 
     latitude          Nullable(Decimal(12,9)),
