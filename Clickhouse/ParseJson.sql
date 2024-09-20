@@ -60,6 +60,9 @@ limit 100000;
 SET describe_extend_object_types=1;
 DESCRIBE test.test_raw;
 
+--новый вид жсона с 24.8 версии
+set allow_experimental_json_type = 1;
+
 
 --Выцепить один элемент с заголовком из жсона:
 select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
