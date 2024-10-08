@@ -16,3 +16,11 @@ toStartOfHour(date_on_shelf+interval '1' HOUR)
 
 --проверка на перенос строки
 if(position('\n' IN tare_sticker) > 0, 1, 0)
+
+--способы вычисления наибольшего времени:
+select arrayMax([now(),now()-interval '1' DAY]);
+greatest
+взять даты в такие конструкции reinterpretAsUInt64()
+, тогда будут выводиться текущие время и дата или численное представление даты, конвертируемое обратно с помощью reinterpretAsDateTime()
+
+SELECT toDateTime(max2(toUnixTimestamp(now()), toUnixTimestamp(now() - INTERVAL '1' DAY)))
