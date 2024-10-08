@@ -24,3 +24,10 @@ greatest
 , тогда будут выводиться текущие время и дата или численное представление даты, конвертируемое обратно с помощью reinterpretAsDateTime()
 
 SELECT toDateTime(max2(toUnixTimestamp(now()), toUnixTimestamp(now() - INTERVAL '1' DAY)))
+
+with cte as (select now() as m1,toDateTime('2024-10-07') as m2, null as m3)
+select greatest(m1,m2,m3),arrayMax([m1,m2]) ,arrayMin([m1,m2])
+,arrayReduce('max', [m1,m2,m3]) -- лучшие варианты, отбрасывает нуллы а из остальных считает
+,arrayReduce('min', [m1,m2,m3])
+from cte
+;
