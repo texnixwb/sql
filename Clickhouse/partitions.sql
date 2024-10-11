@@ -7,6 +7,15 @@ ALTER TABLE t1 MODIFY SETTINGS 'replication_alter_partitions_sync' = 1;
 set max_table_size_to_drop=5000000000000;
 --генерация запросов для корректной очистки таблиц перед дропом:
 --очищаем столбцы в партициях от данных, не включая ключ и партиции
+with
+    parts as
+    (select distinct partition,database,table from system.parts where table='ordo_position_changes_raw' and database='raw')
+select -10-row_number() over (partition by 1) as sort_id,'ALTER TABLE '||cc.database||'.'||cc.table||' DROP PARTITION '||cc.partition||';' as sql_cript
+    ,cc.partition
+    from parts cc;
+
+
+
 
 --делаем это по партициям, начиная с самой старой
 with
