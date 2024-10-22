@@ -76,32 +76,32 @@ SETTINGS kafka_topic_list = 'topic_list_name',
 CREATE TABLE stage_bo.transactions_raw (
     message    String CODEC(ZSTD(1)),
     _topic     LowCardinality(String),
-    _key       String,
+    _key       String comment 'какое поле попадает в ключ',
     _offset    UInt64 CODEC(T64, ZSTD(1)),
-   _timestamp Nullable(DateTime),
-    _partition UInt8,
-   _row_created DateTime
-) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_row_created)  ORDER BY _key
-    TTL toStartOfDay(_row_created) + INTERVAL 3 MONTH DELETE
-    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes=536870912
+   _timestamp DateTime,
+    _partition UInt8
+) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_timestamp)  ORDER BY _key
+    TTL toStartOfDay(_timestamp) + INTERVAL 3 MONTH DELETE
+    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes='512M'
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
 --стандарт хранения в архиве
+--дефолтные настройки сервера: CODEC(ZSTD(2)), merge_with_ttl_timeout = 2592000, ttl_only_drop_parts = 1, index_granularity=16386 , index_granularity_bytes='512M'
+
 CREATE TABLE stage_wh.wh_sorted_raw
 (
-    `message` String CODEC(ZSTD(1)),
-    `_topic` LowCardinality(String) CODEC(ZSTD(1)),
-    `_key` String CODEC(ZSTD(1)),
-    `_offset` UInt64 CODEC(T64, ZSTD(1)),
-    `_timestamp` DateTime CODEC(ZSTD(1)),
-    `_partition` UInt8 CODEC(ZSTD(1))
+    `message` String,
+    `_topic` LowCardinality(String),
+    `_key` String comment 'Какое поле ключ',
+    `_offset` UInt64,
+    `_timestamp` DateTime,
+    `_partition` UInt8 
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(_timestamp)
 ORDER BY _key
-TTL toStartOfMonth(_timestamp) + INTERVAL 24 MONTH
-SETTINGS index_granularity=16386,merge_with_ttl_timeout = 2000000,ttl_only_drop_parts = 1, index_granularity_bytes=536870912
-COMMENT '';
+TTL toStartOfMonth(_timestamp) + INTERVAL 36 MONTH DELETE
+COMMENT '<Номер задачи> <бизнес понятие данных>';
 
 
 --оптимальное хранение коротких по времени архивов:
