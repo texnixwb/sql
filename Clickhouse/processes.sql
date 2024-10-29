@@ -106,3 +106,11 @@ from system.query_log
          and type='QueryFinish'
          limit 100;
 
+--инфа поточнее
+select event_time,query_duration_ms,read_rows,read_bytes,memory_usage
+,query,normalized_query_hash,databases,tables,columns,user
+from system.query_log where type='QueryFinish'
+                      and has(tables,'core_wh.shk_event_log_shk')
+                      and query not like '%show create%'
+                      and user!='default'
+                      limit 100;
