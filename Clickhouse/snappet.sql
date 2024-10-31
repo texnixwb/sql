@@ -34,3 +34,9 @@ from cte;
 --массовый дроп таблиц и вьюх 
 select 'drop '||if(engine like '%View%','view','table')||' '||database||'.'||name||';'
 from system.tables where create_table_query like '%wb_box%';
+
+--создать табличку ас
+CREATE TABLE my_data.clients
+Engine = ReplacingMergeTree
+ORDER BY id
+AS SELECT * FROM my_data_pg.clients
