@@ -114,3 +114,19 @@ from system.query_log where type='QueryFinish'
                       and query not like '%show create%'
                       and user!='default'
                       limit 100;
+
+--ещё точнее
+with ('stage_wh.assembled' as _table)
+select max(event_time) as max_start,round(sum(query_duration_ms)/1000/60) as sum_minut
+     ,round(avg(read_rows)/1000) as avg_rows_k,round(avg(read_bytes)/1024/1024) as avg_Mb
+     ,round(sum(written_rows)/1000/1000) as writen_kk_rows,round(avg(memory_usage)/1024) as avg_memory_Kb
+,max(query) as bigest_query
+,max(normalized_query_hash) as sample_hash
+,arrayFilter(x -> x !=_table and x not like '_temp%',arrayDistinct(arrayFlatten(groupArray(tables)))) as u_tables -- убрать источник таблицы
+,arrayMap(x -> replace(x, _table||'.', ''),arrayFilter(x -> x like _table||'%',arrayDistinct(arrayFlatten(groupArray(columns))))) as u_columns -- выбрать только столбцы источника
+,arrayMap(x -> replace(x, _table||'.', ''),arrayFilter(x -> x like _table||'%',arrayDistinct(arrayFlatten(groupArray(partitions))))) as u_partitions -- выбрать только партиции источника
+,arrayDistinct(arrayFlatten(groupArray(user))) as u_user
+,arrayDistinct(groupArray(replace(toString(address),'::ffff:',''))) as u_address
+from system.query_log where type='QueryFinish'
+and user not in (currentUser(),'default') and databases !=['system'] and query not like 'show create%'
+and has(tables,_table);
