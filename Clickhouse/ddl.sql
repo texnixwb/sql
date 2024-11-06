@@ -76,8 +76,9 @@ ENGINE = Kafka(dataops_kafka_gold)
 SETTINGS kafka_topic_list = 'topic_list_name',
   kafka_group_name = 'nameserver_nametopic_group',
   kafka_format = 'JSONAsString',
-  kafka_max_block_size = 100000,  
-  kafka_num_consumers = 3;
+  kafka_max_block_size = '64Ki',
+  kafka_poll_max_batch_size = '64Ki',  
+  kafka_num_consumers = 1;
 
 CREATE TABLE stage_bo.transactions_raw (
     message    String CODEC(ZSTD(1)),
@@ -88,7 +89,7 @@ CREATE TABLE stage_bo.transactions_raw (
     _partition UInt8
 ) ENGINE = MergeTree  PARTITION BY toYYYYMMDD(_timestamp)  ORDER BY _key
     TTL toStartOfDay(_timestamp) + INTERVAL 3 MONTH DELETE
-    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes='512M'
+    SETTINGS index_granularity=16386, merge_with_ttl_timeout = 86400,ttl_only_drop_parts = 1, index_granularity_bytes='512Mi'
     COMMENT '<номер задачи> <описание> из <имя топика кафки>';
 
 --стандарт хранения в архиве
