@@ -50,8 +50,8 @@ ORDER BY tuple()
 SETTINGS index_granularity = 8192;
 truncate table test.test_raw;
 insert into test.test_raw (raw)
-select
-    arrayJoin(JSONExtractArrayRaw(message)) as row
+select message
+    --arrayJoin(JSONExtractArrayRaw(message)) as row
     --,arrayJoin(JSONExtractArrayRaw(row, 'shks')) AS shks
 from stage_external.kafka_table_raw
      where _row_created>'2023-06-01'
