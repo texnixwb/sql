@@ -25,8 +25,9 @@ ALTER TABLE test_table UPDATE column_a = column_a WHERE 1
 ALTER TABLE datamart.positions_on_shelf MODIFY TTL toStartOfDay(date_on_shelf) + toIntervalMonth(1);
 
 --правильные сетинсы для ТТЛ
-ALTER TABLE stage_wh.wh_sorted_raw MODIFY SETTING ttl_only_drop_parts = 1;
-ALTER TABLE stage_wh.wh_sorted_raw MODIFY SETTING merge_with_ttl_timeout = 86400;
+ALTER TABLE system.query_log MODIFY SETTING ttl_only_drop_parts = 1;
+ALTER TABLE system.query_log MODIFY SETTING merge_with_ttl_timeout = 86400;
+ALTER TABLE system.query_log MODIFY TTL event_date + toIntervalYear(1);
 
 --удалить
 alter table test.unloaded_rids  delete where dwh<now()-interval 1 DAY;
