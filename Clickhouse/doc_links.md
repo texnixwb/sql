@@ -1,3 +1,6 @@
+Тестовая среда всех версий кликхауза:
+https://fiddle.clickhouse.com/d956ae01-bb7b-4c58-994c-29b6190a7c30
+
 Настройки кликхауза (опции):
 https://gitea.com/tempertan/ClickHouse/src/branch/master/docs/ru/operations/settings/settings.md
 
@@ -15,3 +18,5 @@ https://bigdataschool.ru/blog/news/clickhouse/page/3
 
 Иван Шамаев
 https://ivan-shamaev.ru/clickhouse-101-course-on-learn-clickhouse-com/
+
+
