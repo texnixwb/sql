@@ -62,6 +62,21 @@ DESCRIBE test.test_raw;
 
 --новый вид жсона с 24.8 версии
 set allow_experimental_json_type = 1;
+--потому с 24.8:
+SET allow_experimental_object_type = 1;
+CREATE TEMPORARY TABLE test_raw
+(
+    `raw` Object('json')
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+insert into test_raw (raw)
+SELECT '[{"download_time":"18500","c":"118"},{"download_time":"18600","c":"8435"}]';
+
+SET describe_extend_object_types=1;
+DESCRIBE test_raw;
+
 
 
 --Выцепить один элемент с заголовком из жсона:
