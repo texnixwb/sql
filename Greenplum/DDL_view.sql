@@ -34,3 +34,28 @@ and shobj.nspname = 'stage_ut';
 
 --поменять тип колумна
 alter table stage_external.logistics_shipping_tsd alter column seal2 type int USING seal2::integer;
+
+-- Получить список дропнутых столбцов ()
+
+select
+    ut.relname,
+    attnum,
+    *
+from 
+    pg_attribute pga
+    inner join pg_catalog.pg_statio_user_tables ut on pga.attrelid = ut.relid
+where
+    -- attrelid = 'tz_world'::regclass
+    atttypid = 0
+    and attnum > 0
+order by 
+    attnum;
+
+-- восстановить столбец №2 с типом `geometry` и именем `geometry`
+UPDATE pg_attribute
+SET attname = 'geometry',
+    atttypid = 'geometry'::regtype,
+    attstattarget = -1,
+    attisdropped = FALSE
+WHERE attrelid = 'tz_world'::regclass
+AND attnum = 2;
