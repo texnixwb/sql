@@ -3,8 +3,8 @@ ALTER TABLE t1_new MODIFY SETTINGS 'replication_alter_partitions_sync' = 2;
 --включить репликацию
 ALTER TABLE t1 MODIFY SETTINGS 'replication_alter_partitions_sync' = 1;
 
---удаляем таблицы любого размера
-set max_table_size_to_drop=5000000000000;
+--удаляем партиции любого размера
+set max_partition_size_to_drop=50000000000000;
 --генерация запросов для корректной очистки таблиц перед дропом:
 --очищаем столбцы в партициях от данных, не включая ключ и партиции
 with
