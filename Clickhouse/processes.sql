@@ -49,7 +49,10 @@ select * from system.tables         where create_table_query like '%oof-position
 select * from system.detached_parts;
 
 --свободное место и всего места на дисках:
-select free_space/1024/1024/1024 as  free_space_gb,total_space/1024/1024/1024 as  total_space_gb,unreserved_space/1024/1024/1024 as  unreserved_space_gb
+select round(free_space/1024/1024/1024) as  free_space_gb
+     ,round(total_space/1024/1024/1024) as  total_space_gi
+     ,round(total_space/1000/1000/1000) as  total_space_gb
+     ,round(unreserved_space/1024/1024/1024) as  unreserved_space_gb
 from system.disks;
 
 --сравнение сколько занято на диске, и сколько весят таблицы:
