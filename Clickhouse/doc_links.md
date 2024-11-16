@@ -19,4 +19,5 @@ https://bigdataschool.ru/blog/news/clickhouse/page/3
 Иван Шамаев
 https://ivan-shamaev.ru/clickhouse-101-course-on-learn-clickhouse-com/
 
-
+Интересные фишки про ASOF и уникальные кликхауза:
+https://habr.com/ru/companies/oleg-bunin/articles/328784/
