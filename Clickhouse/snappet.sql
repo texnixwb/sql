@@ -40,3 +40,15 @@ CREATE TABLE my_data.clients
 Engine = ReplacingMergeTree
 ORDER BY id
 AS SELECT * FROM my_data_pg.clients
+
+
+
+-- генерируем на ч4
+select replace(create_table_query,'CREATE DICTIONARY dictionaries.','CREATE DICTIONARY IF NOT EXISTS dict.')||';' as q
+from system.tables where database='dictionaries' and create_table_query like '%ODBC%';
+
+-- пересоздать все дикты при переезде на 24.8 версию
+SELECT 'drop DICTIONARY dictionaries.'||table||'; '||
+substring(create_table_query, 1, position(create_table_query, 'SOURCE') - 1)
+||'SOURCE(CLICKHOUSE(NAME dictator_ch4 DB ''dict'' QUERY ''select * from dict.'||table||''')) LIFETIME(MIN 8640 MAX 86400) LAYOUT(HASHED_ARRAY);'
+from system.tables where database='dictionaries' and create_table_query like '%ODBC%';
