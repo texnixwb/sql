@@ -21,3 +21,7 @@ https://ivan-shamaev.ru/clickhouse-101-course-on-learn-clickhouse-com/
 
 Интересные фишки про ASOF и уникальные кликхауза:
 https://habr.com/ru/companies/oleg-bunin/articles/328784/
+
+Примеры квот https://chistadata.com/knowledge-base/clickhouse-quotas-sql-reference/
+
+Примеры ограничения юзеров https://kb.altinity.com/altinity-kb-setup-and-maintenance/rbac/
