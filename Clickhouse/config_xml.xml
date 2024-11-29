@@ -1,3 +1,8 @@
+--посмотреть дефолт конфиги
+select *
+from system.server_settings
+where name = 'default_replica_path
+
 ---настроить разные комбинации кластеров
 <yandex>
     <remote_servers>
