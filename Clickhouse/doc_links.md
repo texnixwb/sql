@@ -27,3 +27,5 @@ https://habr.com/ru/companies/oleg-bunin/articles/328784/
 Примеры ограничения юзеров https://kb.altinity.com/altinity-kb-setup-and-maintenance/rbac/
 
 Интересный вариант диктонариса https://altinity.com/blog/clickhouse-as-the-looking-glass-for-oltp-data
+
+Про конект клика к айсбергу https://habr.com/ru/articles/850674/
