@@ -64,18 +64,18 @@ DESCRIBE test.test_raw;
 set allow_experimental_json_type = 1;
 --потому с 24.8:
 SET allow_experimental_object_type = 1;
-CREATE TEMPORARY TABLE test_raw
+CREATE TABLE raw.describe_raw
 (
-    `raw` Object('json')
+    raw Object('json')
 )
 ENGINE = MergeTree
 ORDER BY tuple();
 
-insert into test_raw (raw)
-SELECT '[{"download_time":"18500","c":"118"},{"download_time":"18600","c":"8435"}]';
+insert into raw.describe_raw (raw)
+SELECT message from raw.waysheets_close_raw limit 100000;
 
 SET describe_extend_object_types=1;
-DESCRIBE test_raw;
+DESCRIBE raw.describe_raw;
 
 
 
