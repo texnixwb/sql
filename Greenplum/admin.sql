@@ -22,3 +22,14 @@ drop schema test_abishev cascade;
 revoke ro  from abishev;
 revoke all on ALL TABLES IN SCHEMA shk_tracker from abishev;
 drop user abishev;
+
+--так как клик перестал конектиться к гринпламу, можно сделать связку, сначала забираем в ПГ, потом из ПГ в клик
+
+CREATE EXTENSION dblink;
+
+--:5432 порт не нужен
+   SELECT id
+   FROM dblink('host=host user=** dbname=dwh password=**',
+               'SELECT id FROM schema.table')
+   AS t(id int)
+   limit 100;
