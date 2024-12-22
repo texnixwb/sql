@@ -4,3 +4,4 @@ SETTINGS max_memory_usage = '160Gi'; -- как сеттингс при запр�
 SETTINGS max_insert_threads=20
 --удаление больших таблиц
 set max_table_size_to_drop=5000000000000;
+set max_partition_size_to_drop=5000000000000;
