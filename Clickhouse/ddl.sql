@@ -33,12 +33,12 @@ ALTER TABLE system.query_log MODIFY SETTING ttl_only_drop_parts = 1;
 ALTER TABLE system.query_log MODIFY SETTING merge_with_ttl_timeout = 86400;
 ALTER TABLE system.query_log MODIFY SETTING min_bytes_for_wide_part = 0;
 ALTER TABLE system.query_log MODIFY SETTING min_rows_for_wide_part = 0;
-ALTER TABLE system.query_log MODIFY COLUMN _kafka_offset DateTime TTL toStartOfMonth(row_created) + toIntervalMonth(3);
-ALTER TABLE system.query_log MODIFY COLUMN _kafka_timestamp DateTime TTL toStartOfMonth(row_created) + toIntervalMonth(23);
-ALTER TABLE system.query_log MODIFY COLUMN _row_created DateTime TTL toStartOfMonth(row_created) + toIntervalMonth(2);
-ALTER TABLE system.query_log MODIFY COLUMN _kafka_partition DateTime TTL toStartOfMonth(row_created) + toIntervalMonth(2);
-ALTER TABLE system.query_log MODIFY TTL toStartOfMonth(row_created) + toIntervalMonth(12) RECOMPRESS CODEC(ZSTD(1));
-ALTER TABLE system.query_log MODIFY TTL toStartOfMonth(row_created) + toIntervalMonth(24) RECOMPRESS CODEC(ZSTD(8));
+ALTER TABLE system.query_log MODIFY COLUMN _kafka_offset UInt64 TTL toStartOfMonth(row_created) + toIntervalMonth(3),
+    MODIFY COLUMN _kafka_timestamp Nullable(DateTime) TTL toStartOfMonth(row_created) + toIntervalMonth(23),
+    MODIFY COLUMN _row_created DateTime TTL toStartOfMonth(row_created) + toIntervalMonth(2),
+    MODIFY COLUMN _kafka_partition UInt8 TTL toStartOfMonth(row_created) + toIntervalMonth(2),
+    MODIFY TTL toStartOfMonth(row_created) + toIntervalMonth(12) RECOMPRESS CODEC(ZSTD(1)),
+    toStartOfMonth(row_created) + toIntervalMonth(24) RECOMPRESS CODEC(ZSTD(8));
 
 --удалить
 alter table test.unloaded_rids  delete where dwh<now()-interval 1 DAY;
