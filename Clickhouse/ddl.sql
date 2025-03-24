@@ -56,7 +56,7 @@ SOURCE(ODBC(DB 'dwh' TABLE 'shk_tracker.action_list' CONNECTION_STRING 'DSN=Gree
 LIFETIME(MIN 86400 MAX 86400)
 LAYOUT(HASHED(PREALLOCATE 0));
 
---на кластере, кешированный, который занимает 500мб в памяти кеша
+--на кластере, кешированный, который занимает 500мб в памяти кеша / работает до 24.8 версии
 drop DICTIONARY dictionaries.wh_storage_places on cluster distributed_cluster_1;
 CREATE DICTIONARY dictionaries.wh_storage_places on cluster distributed_cluster_1
 (
