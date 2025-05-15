@@ -1,4 +1,4 @@
---Можно для всех таблиц использовать: ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/{database}/{table}', '{replica}')
+--Можно для всех таблиц использовать: ENGINE = ReplicatedMergeTree('/clickhouse/tables/{cluster}-{shard}/{database}/{table}', '{replica}')
 --Тогда будет подставляться имя текущее таблицы в зукипер, проверить можно:
  SELECT
     database,
