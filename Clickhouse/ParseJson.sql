@@ -99,3 +99,6 @@ select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
 ,'"dimensions":'||ifNull(nullIf(JSONExtractRaw(message,'dimensions'),''),'null') as dimensions
 ,'{'||colorIDs||','||colorParentIDs||','||fullNmsImt||','||nameFormula||','||dimensions||'}' as ext_cards
 from _raw;
+
+
+Документация по новому JSON типу: https://clickhouse.com/docs/sql-reference/data-types/newjson
