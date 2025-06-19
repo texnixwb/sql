@@ -10,6 +10,11 @@ DEFINER = big_user SQL SECURITY DEFINER
 as
 select
 
+
+--поменять комменты
+alter table test.test_table comment column id 'комментарий';    
+ALTER TABLE test.test_table MODIFY COMMENT 'коммент на таблицу';
+
 --алгоритм применения кодеков:
 --на жсоны CODEC(ZSTD(1))
 --на возрастающие даты и 32,64 цифры /для редко поднимаемых данных/ CODEC(DoubleDelta, ZSTD(1)) /для частых / CODEC(Delta, ZSTD(1))
