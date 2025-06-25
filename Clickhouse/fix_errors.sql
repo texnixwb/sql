@@ -4,3 +4,8 @@ EXCHANGE TABLES buffer.open_registries AND datamart.open_registries; --(не п�
 RENAME TABLE buffer.open_registries TO buffer.open_registries_tmp 
 , datamart.open_registries TO buffer.open_registries 
 , buffer.open_registries_tmp TO datamart.open_registries;
+
+
+Ошибки в мутациях старых решаются уничтожением мутаций:
+
+KILL MUTATION WHERE database='test'
