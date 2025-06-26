@@ -3,7 +3,9 @@ SETTINGS max_memory_usage = '160Gi'; -- как сеттингс при запр�
 -- инсерт в много потоков, стоит использовать, если нет группировки
 SETTINGS max_insert_threads=20
 
-SETTINGS max_execution_time = 30,           -- 30 секунд максимум
+SETTINGS 
+    max_execution_time = 30,           -- 30 секунд максимум
+    timeout_before_checking_execution_speed = 10;  -- Проверка скорости через 10 сек
 --удаление больших таблиц
 set max_table_size_to_drop='100Ti';
 set max_partition_size_to_drop='100Ti';
