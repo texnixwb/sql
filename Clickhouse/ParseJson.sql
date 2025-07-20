@@ -100,5 +100,24 @@ select '{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}' as s,
 ,'{'||colorIDs||','||colorParentIDs||','||fullNmsImt||','||nameFormula||','||dimensions||'}' as ext_cards
 from _raw;
 
+--Битовые поля
+select 16::Int64 as ff --число
+     , bitOr(ff, toUInt8(power(2, 2))) as set_f --поставить бит2
+     , bitAnd(set_f, bitNot(toUInt8(power(2, 2)))) as del_f --убрать бит2
+     , bitTest(set_f, 2) as is_logist-- проверить 2й бит
+     , bitTest(del_f, 2) as is_logist2
+     , bitTest(ff, 2) as is_logist3
+,arrayMap(
+        i -> (bitAnd(ff, bitShiftLeft(1, i)) > 0 ? 1 : 0),
+        range(64)
+    ) AS bits_array_ff --вывести на экран биты
+,arrayMap(
+        i -> (bitAnd(set_f, bitShiftLeft(1, i)) > 0 ? 1 : 0),
+        range(64)
+    ) AS bits_array_set_f
+,arrayMap(
+        i -> (bitAnd(del_f, bitShiftLeft(1, i)) > 0 ? 1 : 0),
+        range(64)
+    ) AS bits_array_del_f
 
 Документация по новому JSON типу: https://clickhouse.com/docs/sql-reference/data-types/newjson
