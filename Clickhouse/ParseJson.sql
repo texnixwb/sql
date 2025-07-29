@@ -63,19 +63,17 @@ DESCRIBE test.test_raw;
 --новый вид жсона с 24.8 версии
 set allow_experimental_json_type = 1;
 --потому с 24.8:
-SET allow_experimental_object_type = 1;
 CREATE TABLE raw.describe_raw
 (
     raw Object('json')
 )
 ENGINE = MergeTree
-ORDER BY tuple();
+ORDER BY tuple() settings allow_experimental_object_type = 1;
 
 insert into raw.describe_raw (raw)
 SELECT message from raw.waysheets_close_raw limit 100000;
 
-SET describe_extend_object_types=1;
-DESCRIBE raw.describe_raw;
+DESCRIBE raw.describe_raw settings describe_extend_object_types=1;
 
 
 
