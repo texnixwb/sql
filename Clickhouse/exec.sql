@@ -18,3 +18,6 @@ set max_partition_size_to_drop='100Ti';
 
 --группировки argMax потребляющие много памяти:
 settings max_memory_usage = '200Gi',max_bytes_before_external_group_by = '160Gi'; -- при достижении памяти 164гб будет свапить на диск, работает достаточно быстро и без переполнения.
+
+--чтобы меньше потребляло памяти, если таблица/таблицы все группируются по ордербаю
+optimize_aggregation_in_order = 1
