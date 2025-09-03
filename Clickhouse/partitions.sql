@@ -14,6 +14,10 @@ select -10-row_number() over (partition by 1) as sort_id,'ALTER TABLE '||cc.data
     ,cc.partition
     from parts cc;
 
+ --когда надо будет перебросить партиции из мержтри в репликейтед
+ SELECT DISTINCT concat('ALTER TABLE raw.pos_transaction_v2_raw ATTACH PARTITION ID \'', partition_id, '\' FROM raw.pos_transaction_v2_raw_old;')
+FROM system.parts
+WHERE table = 'pos_transaction_v2_raw' and database='raw' AND active;
 
 
 
