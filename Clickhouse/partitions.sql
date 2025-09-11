@@ -3,6 +3,10 @@ ALTER TABLE t1_new MODIFY SETTINGS 'replication_alter_partitions_sync' = 2;
 --включить репликацию
 ALTER TABLE t1 MODIFY SETTINGS 'replication_alter_partitions_sync' = 1;
 
+--подменить партицию в таблице из другой таблицы 
+ALTER TABLE test.Table_in REPLACE PARTITION 202508 FROM test.Table_from
+settings max_partition_size_to_drop='100Ti';
+
 --удаляем партиции любого размера
 set max_partition_size_to_drop=50000000000000;
 --генерация запросов для корректной очистки таблиц перед дропом:
