@@ -21,6 +21,9 @@ ALTER TABLE test.test_table MODIFY COMMENT 'коммент на таблицу';
 --на рандом цифры 32 и 64 CODEC(T64, ZSTD(1))
 -- для флоат32 64 CODEC(FPC, ZSTD(1))
 
+--c25.6 версии можно применять дефолт кодек на всю таблицу. и ZSTD(1) стал лучше жать чем ZSTD(1-5) - очень странное явление
+SETTINGS default_compression_codec = 'ZSTD(1)';
+
 применить к новым данным:
 ALTER TABLE test_table MODIFY COLUMN column_a CODEC(ZSTD(2)); 
 --но работает только с новыми данными в таблицу, чтобы применить кодек к старым данным:
