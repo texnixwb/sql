@@ -7,3 +7,8 @@
     zookeeper_path
 FROM system.replicas
 WHERE database = 'datamart' AND table = 'crossborder_srids_and_actions_ts';
+
+--вычитка логов со всего кластера:
+select
+    distinct hostname
+from clusterAllReplicas('lake_0', 'system.query_log') limit 100;
